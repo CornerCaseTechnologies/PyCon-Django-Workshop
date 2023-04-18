@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver",
+                "--noreload",
+                "--settings=app.settings.docker"
+            ],
+            // "cwd": "${workspaceFolder}",
+            "django": false,
+            "justMyCode": false,
+            // "env": {
+            //     // "DB_PORT": "3306",
+            //     // "REDIS_URL": "redis://localhost:6379/0",
+            //     "DJANGO_SETTINGS_MODULE": "app.settings.docker"
+            // }
+        }
+}

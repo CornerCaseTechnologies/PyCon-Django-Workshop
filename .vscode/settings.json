@@ -1,0 +1,13 @@
+{
+    "python.pythonPath": "/usr/local/bin/python",
+    // "editor.tokenColorCustomizations": {
+    //     "textMateRules": [
+    //       {
+    //         "scope": "meta.function-call.generic.python",
+    //         "settings": {
+    //           "foreground": "#FF0000"
+    //         }
+    //       }
+    //     ]
+    //   },
+}

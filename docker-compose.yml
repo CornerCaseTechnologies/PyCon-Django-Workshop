@@ -1,0 +1,30 @@
+volumes:
+  postgres_data:
+services:
+  db:
+    image: postgres
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django
+      PGDATA: "/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_NAME: django
+      DB_USER: django
+      DB_PASSWORD: django
+      DB_HOST: db
+      DB_PORT: 5432
+    depends_on:
+      - db
