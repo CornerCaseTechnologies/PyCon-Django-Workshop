@@ -12,15 +12,10 @@
             "args": [
                 "runserver",
                 "--noreload",
-                "--settings=app.settings.docker"
+                "--settings=api.settings"
             ],
-            // "cwd": "${workspaceFolder}",
             "django": false,
             "justMyCode": false,
-            // "env": {
-            //     // "DB_PORT": "3306",
-            //     // "REDIS_URL": "redis://localhost:6379/0",
-            //     "DJANGO_SETTINGS_MODULE": "app.settings.docker"
-            // }
         }
+    ]
 }
