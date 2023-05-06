@@ -5,7 +5,8 @@ from company.models import Employee, Room
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "last_name", "position", "experience"]
+    readonly_fields = ["age"]
+    list_display = ["first_name", "last_name", "position", "experience", "age"]
 
 
 @admin.register(Room)
