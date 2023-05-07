@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from company.models import Employee, Room
+from company.models import Employee, Reservation, Room
 
 
 @admin.register(Employee)
@@ -13,3 +13,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     list_display = ["name", "capacity"]
 
+
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ["room", "reserved_from", "reserved_to", "host"]
