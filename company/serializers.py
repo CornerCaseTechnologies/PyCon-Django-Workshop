@@ -79,7 +79,7 @@ class AttendeeAddSerializer(Serializer):
         return attrs
 
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Reservation, validated_data: dict):
         employee = validated_data['employee_id']
         instance.attendees.add(employee)
         return instance

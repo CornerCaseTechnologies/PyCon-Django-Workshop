@@ -24,7 +24,12 @@ class ReservationViewSet(ModelViewSet):
     @action(detail=True, methods=['PUT'], serializer_class=AttendeeAddSerializer)
     def add_attendee(self, request: Request, pk: int | None = None):
         reservation = self.get_object()
-        serializer = self.get_serializer(reservation, data=request.data, partial=True)
+        serializer = self.get_serializer(
+            reservation, 
+            data=request.data, 
+            partial=True,
+            context={'reservation': reservation}
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
