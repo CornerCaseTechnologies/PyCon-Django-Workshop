@@ -3,4 +3,4 @@ run:
 
 test:
 	@echo 'Running tests'
-	python manage.py test
+	pytest
