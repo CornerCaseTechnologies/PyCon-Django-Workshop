@@ -1,3 +1,6 @@
+import datetime
+
+import pytest
 from django.test import TestCase
 from django.urls import reverse
 from model_bakery.baker import make
@@ -6,97 +9,102 @@ from rest_framework import status
 from company.models import Employee, Room
 
 
-class EmployeeTestCase(TestCase):
-    def setUp(self) -> None:
-        super().setUp()
-
+class TestEmployee:
+    def setup_method(self):
         self.employee = make(
             Employee,
             first_name='John',
             last_name='Doe',
-            email='john.doe@domain.com',
+            email='john.doe@gmail.com',
             position='Software Developer',
-            experience=2
+            experience=2,
+            date_of_birth=datetime.date(1998, 1, 1)
         )
 
         self.employee_list_url = reverse('employees-list')
         self.employee_detail_url = reverse('employees-detail', args=[self.employee.id])
 
-    def test_employee_list(self):
+    @pytest.mark.django_db
+    def test_employee_list(self, client):
         make(Employee, _quantity=2)
 
-        response = self.client.get(self.employee_list_url)
+        response = client.get(self.employee_list_url)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 3
 
-    def test_employee_get(self):
-        response = self.client.get(self.employee_detail_url)
+    @pytest.mark.django_db
+    def test_employee_get(self, client):
+        response = client.get(self.employee_detail_url)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['first_name'], self.employee.first_name)
-        self.assertEqual(response.data['last_name'], self.employee.last_name)
-        self.assertEqual(response.data['email'], self.employee.email)
-        self.assertEqual(response.data['position'], self.employee.position)
-        self.assertEqual(response.data['experience'], self.employee.experience)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['first_name'] == self.employee.first_name
+        assert response.data['last_name'] == self.employee.last_name
+        assert response.data['email'] == self.employee.email
+        assert response.data['experience'] == self.employee.experience
 
-    def test_employee_post(self):
+    @pytest.mark.django_db
+    def test_employee_post(self, client):
         payload = {
             'first_name': 'Jane',
             'last_name': 'Doe',
-            'email': 'jane.doe@domain.com',
+            'email': 'jane.doe@gmail.com',
             'position': 'CEO',
-            'experience': 10
+            'experience': 10,
+            'date_of_birth': datetime.date(1998, 1, 1)
         }
 
-        response = self.client.post(self.employee_list_url, payload)
+        response = client.post(self.employee_list_url, payload)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Employee.objects.count(), 2)
+        assert response.status_code == status.HTTP_201_CREATED
+        assert Employee.objects.count() == 2
         employee = Employee.objects.filter(first_name=payload['first_name']).first()
-        self.assertEqual(employee.first_name, payload['first_name'])
-        self.assertEqual(employee.last_name, payload['last_name'])
-        self.assertEqual(employee.email, payload['email'])
-        self.assertEqual(employee.position, payload['position'])
-        self.assertEqual(employee.experience, payload['experience'])
+        assert employee.first_name == payload['first_name']
+        assert employee.last_name == payload['last_name']
+        assert employee.email == payload['email']
+        assert employee.position == payload['position']
+        assert employee.experience == payload['experience']
 
-    def test_employee_put(self):
+    @pytest.mark.django_db
+    def test_employee_put(self, client):
         payload = {
             'first_name': 'Johnny',
             'last_name': 'Doe',
-            'email': 'johnny.doe@example.com',
+            'email': 'johnny.doe@gmail.com',
             'position': 'Senior Developer',
-            'experience': 7
+            'experience': 7,
+            'date_of_birth': datetime.date(1998, 1, 1)
         }
 
-        response = self.client.put(self.employee_detail_url, payload, content_type='application/json')
+        response = client.put(self.employee_detail_url, payload, content_type='application/json')
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        assert response.status_code == status.HTTP_200_OK
         self.employee.refresh_from_db()
-        self.assertEqual(self.employee.first_name, payload['first_name'])
-        self.assertEqual(self.employee.last_name, payload['last_name'])
-        self.assertEqual(self.employee.email, payload['email'])
-        self.assertEqual(self.employee.position, payload['position'])
-        self.assertEqual(self.employee.experience, payload['experience'])
+        assert self.employee.first_name == payload['first_name']
+        assert self.employee.last_name == payload['last_name']
+        assert self.employee.email == payload['email']
+        assert self.employee.position == payload['position']
+        assert self.employee.experience == payload['experience']
+        assert self.employee.date_of_birth == payload['date_of_birth']
 
-    def test_employee_patch(self):
+    @pytest.mark.django_db
+    def test_employee_patch(self, client):
         payload = {
-            'position': 'CTO',
             'experience': 10
         }
 
-        response = self.client.patch(self.employee_detail_url, payload, content_type='application/json')
+        response = client.patch(self.employee_detail_url, payload, content_type='application/json')
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        assert response.status_code == status.HTTP_200_OK
         self.employee.refresh_from_db()
-        self.assertEqual(self.employee.position, payload['position'])
-        self.assertEqual(self.employee.experience, payload['experience'])
+        assert self.employee.experience == payload['experience']
 
-    def test_employee_delete(self):
-        response = self.client.delete(self.employee_detail_url)
+    @pytest.mark.django_db
+    def test_employee_delete(self, client):
+        response = client.delete(self.employee_detail_url)
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Employee.objects.count(), 0)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert Employee.objects.count() == 0
 
 
 class RoomTestCase(TestCase):

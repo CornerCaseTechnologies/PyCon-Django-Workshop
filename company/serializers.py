@@ -1,5 +1,11 @@
 from rest_framework.serializers import (
-    Serializer, ModelSerializer, SerializerMethodField, EmailField, ValidationError, PrimaryKeyRelatedField
+    Serializer, 
+    ModelSerializer, 
+    SerializerMethodField, 
+    EmailField, 
+    CharField,
+    ValidationError, 
+    PrimaryKeyRelatedField
 )
 
 from company.models import Employee, Reservation, Room
