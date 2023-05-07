@@ -1,4 +1,6 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, EmailField, ValidationError, CharField
+from rest_framework.serializers import (
+    Serializer, ModelSerializer, SerializerMethodField, EmailField, ValidationError, PrimaryKeyRelatedField
+)
 
 from company.models import Employee, Reservation, Room
 
@@ -65,3 +67,19 @@ class ReservationSerializer(ModelSerializer):
             if ip_address:
                 validated_data["creator_ip"] = ip_address
         return super().create(validated_data)
+
+
+class AttendeeAddSerializer(Serializer):
+    employee_id = PrimaryKeyRelatedField(queryset=Employee.objects.all())
+
+    def validate(self, attrs: dict) -> dict:
+        reservation = self.context["reservation"]
+        if reservation.attendees.count() >= reservation.room.capacity:
+            raise ValidationError("Room capacity has been reached, additional attendee can not be added.")
+        return attrs
+
+
+    def update(self, instance, validated_data):
+        employee = validated_data['employee_id']
+        instance.attendees.add(employee)
+        return instance
