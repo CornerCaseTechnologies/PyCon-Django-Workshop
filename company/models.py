@@ -21,14 +21,14 @@ class Employee(models.Model):
     email = models.EmailField(max_length=128)
     position = models.CharField(max_length=64, choices=POSITIONS)
     experience = models.IntegerField(validators=[MinValueValidator(0)], help_text="Number of years working in the company")
-    date_of_birth = models.DateField(default=datetime.now())
+    date_of_birth = models.DateField(default=datetime.today().date())
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
     
     @property
     def age(self) -> int:
-        today = datetime.now()
+        today = datetime.today().date()
         return (today - self.date_of_birth).days // YEAR_IN_DAYS
 
 
