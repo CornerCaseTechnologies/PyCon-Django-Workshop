@@ -1,15 +1,67 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, EmailField, ValidationError, CharField
 
-from company.models import Employee, Room
+from company.models import Employee, Reservation, Room
 
 
 class EmployeeSerializer(ModelSerializer):
     class Meta:
         model = Employee
-        fields = "__all__"
+        exclude = ["position"]
+
+    def validate(self, attrs: dict) -> dict:
+        # Validate that the email domain is 'gmail'
+        if not "@gmail" in attrs["email"]:
+            raise ValidationError("Employee's email must belong to the 'gmail' domain.")
+        
+        # Validate that the created employee's age is a number bigger than his experience
+        employee = Employee(**attrs)
+        if employee.age < attrs["experience"]:
+            raise ValidationError("An employee should not have more years of experience, than years of living..")
+        
+        return attrs
 
 
 class RoomSerializer(ModelSerializer):
+    title = SerializerMethodField()
+
     class Meta:
         model = Room
         fields = "__all__"
+
+    def get_title(self, obj: Room) -> str:
+        return f"{obj.name} ({obj.capacity})"
+
+
+class AttendeesSerializer(ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ["first_name", "last_name", "email"]
+
+
+class ReservationSerializer(ModelSerializer):
+    host_employee_email = EmailField(source="host.email", read_only=True)
+    attendees = AttendeesSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Reservation
+        fields = "__all__"
+
+    def validate(self, attrs: dict) -> dict:
+        # Validate that meetings do not overlap
+        colliding_reservation_count = Reservation.objects.filter(
+            room=attrs["room"], 
+            reserved_to__gte=attrs["reserved_from"],
+            reserved_from__lte=attrs["reserved_to"]
+        ).count()
+
+        if colliding_reservation_count > 0:
+            raise ValidationError("The meeting room is already booked for the provided period.")
+        
+        return attrs
+    
+    def create(self, validated_data: dict) -> dict:
+        if request := self.context.get("request"):
+            ip_address = request.META.get("HTTP_X_FORWARDED_FOR") or request.META.get("REMOTE_ADDR")
+            if ip_address:
+                validated_data["creator_ip"] = ip_address
+        return super().create(validated_data)

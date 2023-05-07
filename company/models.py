@@ -43,3 +43,4 @@ class Reservation(models.Model):
     room = models.ForeignKey(Room, related_name="reservations", on_delete=models.CASCADE)
     host = models.ForeignKey(Employee, related_name="hosted_reservations", null=True, blank=True, on_delete=models.SET_NULL)
     attendees = models.ManyToManyField(Employee, related_name="attended_reservations")
+    creator_ip = models.CharField(max_length=64, null=True, blank=True)
