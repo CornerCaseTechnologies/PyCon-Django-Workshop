@@ -6,19 +6,21 @@ from company.models import Employee, Reservation, Room
 
 
 class EmployeeSerializer(ModelSerializer):
+    position = CharField(write_only=True)
     class Meta:
         model = Employee
-        exclude = ["position"]
+        fields = "__all__"
 
     def validate(self, attrs: dict) -> dict:
         # Validate that the email domain is 'gmail'
-        if not "@gmail" in attrs["email"]:
+        if (email := attrs.get("email")) and not "@gmail" in email:
             raise ValidationError("Employee's email must belong to the 'gmail' domain.")
         
-        # Validate that the created employee's age is a number bigger than his experience
-        employee = Employee(**attrs)
-        if employee.age < attrs["experience"]:
-            raise ValidationError("An employee should not have more years of experience, than years of living..")
+        # Validate that employee's age is a number bigger than his experience
+        if (experience := attrs.get("experience") and "date_of_birth" in attrs.keys()):
+            employee = Employee(**attrs)
+            if employee.age < experience:
+                raise ValidationError("An employee should not have more years of experience, than years of living..")
         
         return attrs
 
