@@ -1,5 +1,3 @@
-import pytest
-
 from django.test import TestCase
 from django.urls import reverse
 from model_bakery.baker import make

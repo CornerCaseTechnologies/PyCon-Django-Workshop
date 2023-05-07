@@ -3,4 +3,5 @@ run:
 
 test:
 	@echo 'Running tests'
-	pytest
+	coverage run -m pytest
+	coverage report

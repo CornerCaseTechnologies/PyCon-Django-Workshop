@@ -1,5 +1,6 @@
 asgiref==3.6.0
 attrs==23.1.0
+coverage==7.2.5
 Django==4.2
 django-extensions==3.2.1
 djangorestframework==3.14.0
