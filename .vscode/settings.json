@@ -1,7 +1,7 @@
 {
     "python.pythonPath": "/usr/local/bin/python",
     "python.testing.pytestArgs": [
-        "company"
+        "."
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
