@@ -30,6 +30,18 @@ class Employee(models.Model):
     def age(self) -> int:
         today = datetime.today().date()
         return (today - self.date_of_birth).days // YEAR_IN_DAYS
+    
+    @property
+    def employees_assuming_the_same_position(self) -> int:
+        return Employee.objects.filter(position=self.position).count()
+    
+    @property
+    def is_veteran(self) -> bool:
+        return (self.experience or 0) >= 10
+    
+    @property
+    def hosted_reservations_count(self) -> int:
+        return self.hosted_reservations.count()
 
 
 class Room(models.Model):
@@ -44,3 +56,7 @@ class Reservation(models.Model):
     host = models.ForeignKey(Employee, related_name="hosted_reservations", null=True, blank=True, on_delete=models.SET_NULL)
     attendees = models.ManyToManyField(Employee, related_name="attended_reservations")
     creator_ip = models.CharField(max_length=64, null=True, blank=True)
+
+    @property
+    def attendees_count(self) -> int:
+        return self.attendees.count()

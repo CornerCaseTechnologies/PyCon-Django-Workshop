@@ -1,3 +1,5 @@
+from django.db.models import Count
+from django.db.models.query import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.decorators import action
@@ -16,6 +18,18 @@ class EmployeeViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = EmployeeFilter
 
+    @action(detail=False, methods=["GET"])
+    def reservations_by_position(self, request: Request) -> Response:
+        reservations_by_position = Employee.objects.annotate(
+            num_reservations=Count("hosted_reservations")
+        ).values(
+            "position"
+        ).annotate(
+            total=Count("hosted_reservations")
+        )
+
+        return Response(reservations_by_position)
+
 
 class RoomViewSet(ModelViewSet):
     serializer_class = RoomSerializer
@@ -32,7 +46,7 @@ class ReservationViewSet(ModelViewSet):
     filterset_class = ReservationFilter
 
     @action(detail=True, methods=["PUT"], serializer_class=AttendeeAddSerializer)
-    def add_attendee(self, request: Request, pk: int | None = None):
+    def add_attendee(self, request: Request, pk: int | None = None) -> dict:
         reservation = self.get_object()
         serializer = self.get_serializer(
             reservation, 
