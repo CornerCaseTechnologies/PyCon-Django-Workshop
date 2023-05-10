@@ -4,7 +4,7 @@ from rest_framework.serializers import (
     EmailField,
     ValidationError,
     CharField,
-    PrimaryKeyRelatedField
+    PrimaryKeyRelatedField,
 )
 from company.models import Employee, Reservation, Room
 
@@ -88,11 +88,12 @@ class AttendeeAddSerializer(Serializer):
     def validate(self, attrs: dict) -> dict:
         reservation = self.context["reservation"]
         if reservation.attendees.count() >= reservation.room.capacity:
-            raise ValidationError("Room capacity has been reached, additional attendee can not be added.")
+            raise ValidationError(
+                "Room capacity has been reached, additional attendee can not be added."
+            )
         return attrs
 
-
     def update(self, instance: Reservation, validated_data: dict):
-        employee = validated_data['employee_id']
+        employee = validated_data["employee_id"]
         instance.attendees.add(employee)
         return instance

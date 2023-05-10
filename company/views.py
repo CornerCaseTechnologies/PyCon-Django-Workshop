@@ -11,6 +11,7 @@ from company.serializers import (
     RoomSerializer,
 )
 
+
 class EmployeeViewSet(ModelViewSet):
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
@@ -25,14 +26,14 @@ class ReservationViewSet(ModelViewSet):
     serializer_class = ReservationSerializer
     queryset = Reservation.objects.all()
 
-    @action(detail=True, methods=['PUT'], serializer_class=AttendeeAddSerializer)
+    @action(detail=True, methods=["PUT"], serializer_class=AttendeeAddSerializer)
     def add_attendee(self, request: Request, pk: int | None = None):
         reservation = self.get_object()
         serializer = self.get_serializer(
-            reservation, 
-            data=request.data, 
+            reservation,
+            data=request.data,
             partial=True,
-            context={'reservation': reservation}
+            context={"reservation": reservation},
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
