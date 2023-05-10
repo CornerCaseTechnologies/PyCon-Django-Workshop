@@ -35,7 +35,7 @@ class TestEmployee:
             "email": "jane.doe@gmail.com",
             "position": "CEO",
             "experience": 10,
-            "date_of_birth": datetime.date(1998, 1, 1)
+            "date_of_birth": datetime.date(1998, 1, 1),
         }
 
         response = client.post(reverse("employees-list"), payload)
@@ -56,10 +56,14 @@ class TestEmployee:
             "email": "johnny.doe@gmail.com",
             "position": "Senior Developer",
             "experience": 7,
-            "date_of_birth": datetime.date(1998, 1, 1)
+            "date_of_birth": datetime.date(1998, 1, 1),
         }
 
-        response = client.put(reverse("employees-detail", args=[employee.id]), payload, content_type="application/json")
+        response = client.put(
+            reverse("employees-detail", args=[employee.id]),
+            payload,
+            content_type="application/json",
+        )
 
         assert response.status_code == status.HTTP_200_OK
         employee.refresh_from_db()
@@ -71,30 +75,32 @@ class TestEmployee:
         assert employee.date_of_birth == payload["date_of_birth"]
 
     def test_employee_patch(self, client, employee):
-        payload = {
-            "experience": 10
-        }
+        payload = {"experience": 10}
 
-        response = client.patch(reverse("employees-detail", args=[employee.id]), payload, content_type="application/json")
+        response = client.patch(
+            reverse("employees-detail", args=[employee.id]),
+            payload,
+            content_type="application/json",
+        )
 
         assert response.status_code == status.HTTP_200_OK
         employee.refresh_from_db()
         assert employee.experience == payload["experience"]
 
     def test_employee_delete(self, client, employee):
-        response = client.delete(reverse("employees-detail",args=[employee.id]))
+        response = client.delete(reverse("employees-detail", args=[employee.id]))
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Employee.objects.count() == 0
 
     @freeze_time("2023-05-08")
     @pytest.mark.parametrize(
-            "age_data", 
-            [
-                {"date_of_birth": datetime.date(1998, 1, 1), "expected_age": 25},
-                {"date_of_birth": datetime.date(2003, 1, 1), "expected_age": 20},
-                {"date_of_birth": datetime.date(2020, 1, 1), "expected_age": 3},
-            ]
+        "age_data",
+        [
+            {"date_of_birth": datetime.date(1998, 1, 1), "expected_age": 25},
+            {"date_of_birth": datetime.date(2003, 1, 1), "expected_age": 20},
+            {"date_of_birth": datetime.date(2020, 1, 1), "expected_age": 3},
+        ],
     )
     def test_property_age(self, client, age_data):
         employee = make(Employee, date_of_birth=age_data["date_of_birth"])
@@ -119,10 +125,7 @@ class TestRoom:
         assert response.data["capacity"] == room.capacity
 
     def test_room_post(self, client, room):
-        payload = {
-            "name": "Meeting room 2",
-            "capacity": 25
-        }
+        payload = {"name": "Meeting room 2", "capacity": 25}
 
         response = client.post(reverse("rooms-list"), payload)
 
@@ -132,12 +135,13 @@ class TestRoom:
         assert room.capacity == payload["capacity"]
 
     def test_room_put(self, client, room):
-        payload = {
-            "name": "Meeting room 0",
-            "capacity": 100
-        }
+        payload = {"name": "Meeting room 0", "capacity": 100}
 
-        response = client.put(reverse("rooms-detail", args=[room.id]), payload, content_type="application/json")
+        response = client.put(
+            reverse("rooms-detail", args=[room.id]),
+            payload,
+            content_type="application/json",
+        )
 
         assert response.status_code == status.HTTP_200_OK
         room.refresh_from_db()
@@ -149,7 +153,11 @@ class TestRoom:
             "capacity": 100,
         }
 
-        response = client.patch(reverse("rooms-detail", args=[room.id]), payload, content_type="application/json")
+        response = client.patch(
+            reverse("rooms-detail", args=[room.id]),
+            payload,
+            content_type="application/json",
+        )
 
         assert response.status_code == status.HTTP_200_OK
         room.refresh_from_db()
@@ -174,8 +182,12 @@ class TestReservation:
         retrieved_reservation = response.data[0]
 
         assert reservation.id == retrieved_reservation["id"]
-        assert reservation.reserved_from == datetime.datetime.strptime(retrieved_reservation["reserved_from"], "%Y-%m-%dT%H:%M:%S.%fZ")
-        assert reservation.reserved_to == datetime.datetime.strptime(retrieved_reservation["reserved_to"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        assert reservation.reserved_from == datetime.datetime.strptime(
+            retrieved_reservation["reserved_from"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        assert reservation.reserved_to == datetime.datetime.strptime(
+            retrieved_reservation["reserved_to"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
         assert reservation.host.id == retrieved_reservation["host"]
         assert reservation.room.id == retrieved_reservation["room"]
         assert reservation.creator_ip == retrieved_reservation["creator_ip"]
