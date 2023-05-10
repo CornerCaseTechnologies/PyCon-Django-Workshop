@@ -1,7 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 
 from company.models import Employee, Reservation, Room
-from company.serializers import EmployeeSerializer, ReservationSerializer, RoomSerializer
+from company.serializers import (
+    EmployeeSerializer,
+    ReservationSerializer,
+    RoomSerializer,
+)
 
 
 class EmployeeViewSet(ModelViewSet):
