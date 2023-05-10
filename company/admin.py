@@ -5,7 +5,12 @@ from company.models import Employee, Reservation, Room
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    readonly_fields = ["age", "employees_assuming_the_same_position", "is_veteran", "hosted_reservations_count"]
+    readonly_fields = [
+        "age",
+        "employees_assuming_the_same_position",
+        "is_veteran",
+        "hosted_reservations_count",
+    ]
     list_display = ["first_name", "last_name", "position", "experience", "age"]
 
 
