@@ -4,8 +4,12 @@ from rest_framework.request import Request
 from rest_framework.viewsets import ModelViewSet
 
 from company.models import Employee, Reservation, Room
-from company.serializers import AttendeeAddSerializer, EmployeeSerializer, ReservationSerializer, RoomSerializer
-
+from company.serializers import (
+    AttendeeAddSerializer,
+    EmployeeSerializer,
+    ReservationSerializer,
+    RoomSerializer,
+)
 
 class EmployeeViewSet(ModelViewSet):
     serializer_class = EmployeeSerializer
