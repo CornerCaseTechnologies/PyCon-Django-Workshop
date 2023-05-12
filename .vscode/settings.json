@@ -1,18 +1,20 @@
 {
-    "python.pythonPath": "/usr/local/bin/python",
-    "python.testing.pytestArgs": [
-        "."
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    // "editor.tokenColorCustomizations": {
-    //     "textMateRules": [
-    //       {
-    //         "scope": "meta.function-call.generic.python",
-    //         "settings": {
-    //           "foreground": "#FF0000"
-    //         }
-    //       }
-    //     ]
-    //   },
+  "python.pythonPath": "/usr/local/bin/python",
+  "python.testing.pytestArgs": ["."],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
+  // "editor.tokenColorCustomizations": {
+  //     "textMateRules": [
+  //       {
+  //         "scope": "meta.function-call.generic.python",
+  //         "settings": {
+  //           "foreground": "#FF0000"
+  //         }
+  //       }
+  //     ]
+  //   },
 }
