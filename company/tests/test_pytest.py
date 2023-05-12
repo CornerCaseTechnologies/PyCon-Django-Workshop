@@ -33,7 +33,7 @@ class TestEmployee:
             "first_name": "Jane",
             "last_name": "Doe",
             "email": "jane.doe@domain.com",
-            "position": "CEO",
+            "position": "manager",
             "experience": 10,
         }
 
@@ -54,7 +54,7 @@ class TestEmployee:
             "first_name": "Johnny",
             "last_name": "Doe",
             "email": "johnny.doe@example.com",
-            "position": "Senior Developer",
+            "position": "senior_developer",
             "experience": 7,
         }
 
@@ -73,7 +73,7 @@ class TestEmployee:
         assert employee.experience == payload["experience"]
 
     def test_employee_patch(self, client, employee):
-        payload = {"position": "CTO", "experience": 10}
+        payload = {"position": "designer", "experience": 10}
 
         response = client.patch(
             reverse("employees-detail", args=[employee.id]),
