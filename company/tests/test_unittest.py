@@ -20,9 +20,7 @@ class EmployeeTestCase(TestCase):
         )
 
         self.employee_list_url = reverse("employees-list")
-        self.employee_detail_url = reverse(
-            "employees-detail", args=[self.employee.id]
-        )
+        self.employee_detail_url = reverse("employees-detail", args=[self.employee.id])
 
     def test_employee_list(self):
         make(Employee, _quantity=2)
@@ -55,9 +53,7 @@ class EmployeeTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Employee.objects.count(), 2)
-        employee = Employee.objects.filter(
-            first_name=payload["first_name"]
-        ).first()
+        employee = Employee.objects.filter(first_name=payload["first_name"]).first()
         self.assertEqual(employee.first_name, payload["first_name"])
         self.assertEqual(employee.last_name, payload["last_name"])
         self.assertEqual(employee.email, payload["email"])
