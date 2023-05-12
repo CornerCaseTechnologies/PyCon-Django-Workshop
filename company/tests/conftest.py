@@ -1,5 +1,4 @@
 import datetime
-
 import pytest
 from company.models import Employee, Room
 from model_bakery.baker import make
