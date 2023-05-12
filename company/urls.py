@@ -7,6 +7,4 @@ router = DefaultRouter()
 router.register("employees", EmployeeViewSet, basename="employees")
 router.register("rooms", RoomViewSet, basename="rooms")
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = [path("", include(router.urls))]

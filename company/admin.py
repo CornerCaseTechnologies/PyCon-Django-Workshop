@@ -11,4 +11,3 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ["name", "capacity"]
-
