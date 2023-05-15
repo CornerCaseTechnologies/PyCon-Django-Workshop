@@ -5,6 +5,7 @@ from rest_framework.serializers import (
     ValidationError,
     CharField,
     PrimaryKeyRelatedField,
+    Serializer,
 )
 from company.models import Employee, Reservation, Room
 
