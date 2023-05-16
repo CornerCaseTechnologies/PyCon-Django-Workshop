@@ -85,7 +85,9 @@ class ReservationSerializer(ModelSerializer):
 
 
 class AttendeeAddSerializer(Serializer):
-    employee_id = PrimaryKeyRelatedField(queryset=Employee.objects.all())
+    employee_id = PrimaryKeyRelatedField(
+        queryset=Employee.objects.all(), write_only=True
+    )
 
     def validate(self, attrs: dict) -> dict:
         reservation = self.context["reservation"]
