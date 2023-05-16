@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='employee',
             name='position',
-            field=models.CharField(choices=[('manager', 'Manager'), ('senior_developer', 'Senior Developer'), ('developer', 'Developer'), ('junior_developer', 'Junior Developer'), ('designer', 'Designer'), ('tester', 'Tester')], max_length=64),
+            field=models.CharField(choices=[('manager', 'MANAGER'), ('senior_developer', 'SENIOR_DEVELOPER'), ('developer', 'DEVELOPER'), ('junior_developer', 'JUNIOR_DEVELOPER'), ('designer', 'DESIGNER'), ('tester', 'TESTER')], max_length=64),
         ),
         migrations.CreateModel(
             name='Reservation',
