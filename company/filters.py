@@ -9,6 +9,7 @@ from django_filters import (
 )
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from company import Positions
 
 from company.models import Employee, Reservation, Room
 
@@ -39,7 +40,7 @@ class RoomFilter(FilterSet):
 class EmployeeFilter(FilterSet):
     name = CharFilter(method="filter_name", label="Name")
     max_experience = NumberFilter(field_name="experience", lookup_expr="lte")
-    assumed_position = ChoiceFilter(choices=Employee.POSITIONS)
+    assumed_position = ChoiceFilter(choices=Positions)
 
     class Meta:
         model = Employee
