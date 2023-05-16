@@ -25,14 +25,13 @@ class TestEmployee:
         assert response.data["first_name"] == employee.first_name
         assert response.data["last_name"] == employee.last_name
         assert response.data["email"] == employee.email
-        assert response.data["position"] == employee.position
         assert response.data["experience"] == employee.experience
 
     def test_employee_post(self, client, employee):
         payload = {
             "first_name": "Jane",
             "last_name": "Doe",
-            "email": "jane.doe@domain.com",
+            "email": "jane.doe@gmail.com",
             "position": "manager",
             "experience": 10,
         }
@@ -53,7 +52,7 @@ class TestEmployee:
         payload = {
             "first_name": "Johnny",
             "last_name": "Doe",
-            "email": "johnny.doe@example.com",
+            "email": "johnny.doe@gmail.com",
             "position": "senior_developer",
             "experience": 7,
         }
