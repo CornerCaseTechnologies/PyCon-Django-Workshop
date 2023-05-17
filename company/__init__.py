@@ -10,10 +10,15 @@ class ChoicesEnum(Choices):
         return choices
 
 
+class ExampleEnum(ChoicesEnum):
+    ChoiceA = "a"
+    ChoiceB = "b"
+
+
 class Positions(ChoicesEnum):
-        MANAGER = "manager"
-        SENIOR_DEVELOPER = "senior_developer"
-        DEVELOPER = "developer"
-        JUNIOR_DEVELOPER = "junior_developer"
-        DESIGNER = "designer"
-        TESTER = "tester"
+    MANAGER = "manager"
+    SENIOR_DEVELOPER = "senior_developer"
+    DEVELOPER = "developer"
+    JUNIOR_DEVELOPER = "junior_developer"
+    DESIGNER = "designer"
+    TESTER = "tester"
