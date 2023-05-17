@@ -45,7 +45,5 @@ class Reservation(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
     )
-    attendees = models.ManyToManyField(
-        Employee, related_name="attended_reservations"
-    )
+    attendees = models.ManyToManyField(Employee, related_name="attended_reservations")
     creator_ip = models.CharField(max_length=64, null=True, blank=True)

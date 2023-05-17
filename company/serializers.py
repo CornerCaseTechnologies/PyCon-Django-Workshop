@@ -1,9 +1,10 @@
 from rest_framework.serializers import (
+    Serializer,
     ModelSerializer,
     SerializerMethodField,
     EmailField,
-    ValidationError,
     CharField,
+    ValidationError,
     PrimaryKeyRelatedField,
     Serializer,
 )
