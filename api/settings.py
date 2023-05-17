@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_extensions",
     "drf_spectacular",
+    "django_filters",
     "company",
 ]
 
